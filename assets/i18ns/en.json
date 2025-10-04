@@ -1,0 +1,13 @@
+{
+  "footer": {
+    "copyright": "© 2025 Marcel Berger"
+  },
+  "pages": {
+    "chat": "Chat",
+    "legalImprint": "Imprint",
+    "legalPrivacyPolicy": "Privacy Policy",
+    "legalTermsOfUse": "Terms of Use",
+    "profile": "Profile",
+    "projects": "Projects"
+  }
+}
