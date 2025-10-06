@@ -15,11 +15,11 @@ Future<void> main() async {
   setUrlStrategy(PathUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
   await HpEnv.load();
-  runApp(const TerraloggerUi());
+  runApp(const HpUi());
 }
 
-class TerraloggerUi extends StatelessWidget {
-  const TerraloggerUi({super.key});
+class HpUi extends StatelessWidget {
+  const HpUi({super.key});
 
   @override
   Widget build(BuildContext context) {

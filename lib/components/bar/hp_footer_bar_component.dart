@@ -18,11 +18,6 @@ class HpFooterBarComponent extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: HpLayout.buttonFooterSize / 4),
-              child: Text(HpI18n.translate(context, "footer.copyright"), style: textStyle),
-            ),
-            Text("|", style: textStyle),
             HpIconTextButtonComponent(
               text: HpI18n.translate(context, "pages.legalImprint"),
               onTap: () => HpRouter.push(HpRoute.legalImprint),

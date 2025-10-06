@@ -1,90 +1,165 @@
+import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:homepage_ui/components/button/hp_icon_button_component.dart';
+import 'package:homepage_ui/components/image/hp_round_image_component.dart';
 import 'package:homepage_ui/components/scaffold/hp_main_scaffold_component.dart';
 import 'package:homepage_ui/configs/hp_layout.dart';
+import 'package:homepage_ui/data/content/profile/hp_content_profile_data.dart';
+import 'package:homepage_ui/data/content/sociallinks/hp_content_social_link_data.dart';
+import 'package:homepage_ui/data/media/hp_media_data.dart';
+import 'package:homepage_ui/enums/hp_content_social_link_type.dart';
+import 'package:homepage_ui/models/hp_content_model.dart';
+import 'package:homepage_ui/providers/content/hp_content_provider.dart';
+import 'package:homepage_ui/providers/media/hp_media_provider.dart';
+import 'package:homepage_ui/services/content/loader/hp_content_profile_loader_service.dart';
+import 'package:homepage_ui/services/content/loader/hp_content_social_links_loader_service.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class HpMainPage extends StatelessWidget {
+class HpMainPage extends StatefulWidget {
   const HpMainPage({super.key});
 
   @override
+  State<HpMainPage> createState() => _HpMainPageState();
+}
+
+class _HpMainPageState extends State<HpMainPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      HpContentProfileLoaderService().load(context);
+      HpContentSocialLinksLoaderService().load(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool isMobile = HpLayout.isMobile(context);
     return HpMainScaffoldComponent(
-      child: Center(
-        child: isMobile
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [_getImage(context), _getContent(context, true)],
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [_getImage(context), _getContent(context, false)],
-              ),
+      child: Consumer<HpContentProvider>(
+        builder: (context, provider, _) {
+          HpContentModel<HpContentProfileData> profile = HpContentProfileLoaderService().get(context, provider);
+          HpContentModel<List<HpContentSocialLinkData>> socialLinks = HpContentSocialLinksLoaderService().get(
+            context,
+            provider,
+          );
+          return _getContent(context, profile, socialLinks);
+        },
       ),
     );
   }
 
-  Widget _getImage(BuildContext context) {
-    return Container(
-      height: 250,
-      width: 250,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(250 / 2),
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-      ),
+  Widget _getContent(
+    BuildContext context,
+    HpContentModel<HpContentProfileData> profile,
+    HpContentModel<List<HpContentSocialLinkData>> socialLinks,
+  ) {
+    return HpLayout.isMobile(context)
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _getContentProfileImage(context, true, profile),
+              _getContentInfobox(context, true, profile, socialLinks),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _getContentProfileImage(context, false, profile),
+              Flexible(child: _getContentInfobox(context, false, profile, socialLinks)),
+            ],
+          );
+  }
+
+  Widget _getContentProfileImage(BuildContext context, bool isMobile, HpContentModel<HpContentProfileData> profile) {
+    return Consumer<HpMediaProvider>(
+      builder: (context, provider, _) {
+        HpMediaData? media = provider.mediaCache[profile.data?.profileMedia];
+        Uint8List? mediaData = media?.data;
+        return HpRoundImageComponent(
+          size: isMobile ? HpLayout.imageProfileMobileSize : HpLayout.imageProfileDesktopSize,
+          isLoading: media?.loading ?? true,
+          data: mediaData,
+        );
+      },
     );
   }
 
-  Widget _getContent(BuildContext context, bool isMobile) {
+  Widget _getContentInfobox(
+    BuildContext context,
+    bool isMobile,
+    HpContentModel<HpContentProfileData> profile,
+    HpContentModel<List<HpContentSocialLinkData>> socialLinks,
+  ) {
     return Padding(
       padding: EdgeInsets.only(
-        left: isMobile ? 0 : HpLayout.pageDefaultSpacing,
-        top: isMobile ? HpLayout.pageDefaultSpacing : 0,
+        left: isMobile ? 0 : HpLayout.pageDefaultSpacing * 2,
+        top: isMobile ? HpLayout.pageDefaultSpacing * 2 : 0,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-        children: [_getContentHeader(context), _getContentSocialLinks(context)],
+        children: [
+          _getContentInfoboxHeader(context, isMobile, profile),
+          _getContentInfoboxSocialLinks(context, socialLinks),
+        ],
       ),
     );
   }
 
-  Widget _getContentHeader(BuildContext context) {
+  Widget _getContentInfoboxHeader(BuildContext context, bool isMobile, HpContentModel<HpContentProfileData> profile) {
+    String headerTitle = "";
+    String? firstName = profile.data?.firstName;
+    String? lastName = profile.data?.lastName;
+    if (firstName != null && lastName != null) {
+      headerTitle = "$firstName $lastName".toUpperCase();
+    }
     return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("", style: Theme.of(context).textTheme.titleLarge),
-        Text(""),
+        Text(
+          headerTitle,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 35),
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: HpLayout.pageDefaultSpacing * 0.5),
+          child: Text(profile.data?.bio ?? "", textAlign: isMobile ? TextAlign.center : TextAlign.start),
+        ),
       ],
     );
   }
 
-  Widget _getContentSocialLinks(BuildContext context) {
-    List<Widget> links = _getContentSocialLinksButtons(context);
+  Widget _getContentInfoboxSocialLinks(
+    BuildContext context,
+    HpContentModel<List<HpContentSocialLinkData>> socialLinks,
+  ) {
+    List<HpContentSocialLinkData> list = socialLinks.data ?? [];
     return Padding(
-      padding: const EdgeInsets.only(top: HpLayout.pageDefaultSpacing),
+      padding: const EdgeInsets.only(top: HpLayout.pageDefaultSpacing * 2),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: links
-            .mapIndexed(
-              (i, e) => Padding(
-                padding: EdgeInsets.only(right: i < links.length - 1 ? HpLayout.pageDefaultSpacing : 0),
-                child: e,
-              ),
-            )
+        children: list
+            .mapIndexed((i, e) => _getContentInfoboxSocialLinksButton(context, i == list.length - 1, e))
             .toList(),
       ),
     );
   }
 
-  List<Widget> _getContentSocialLinksButtons(BuildContext context) {
-    return [
-      // TODO: set button sizes
-      HpIconButtonComponent(icon: Icons.youtube_searched_for, onTap: () {}, height: 50, width: 50),
-      HpIconButtonComponent(icon: Icons.youtube_searched_for, onTap: () {}, height: 50, width: 50),
-      HpIconButtonComponent(icon: Icons.youtube_searched_for, onTap: () {}, height: 50, width: 50),
-      HpIconButtonComponent(icon: Icons.youtube_searched_for, onTap: () {}, height: 50, width: 50),
-      HpIconButtonComponent(icon: Icons.youtube_searched_for, onTap: () {}, height: 50, width: 50),
-    ];
+  Widget _getContentInfoboxSocialLinksButton(BuildContext context, bool isLast, HpContentSocialLinkData socialLink) {
+    String? link = socialLink.link;
+    return link != null
+        ? Padding(
+            padding: EdgeInsets.only(right: isLast ? 0 : HpLayout.pageDefaultSpacing),
+            child: HpIconButtonComponent(
+              icon: socialLink.type?.icon ?? Icons.open_in_new,
+              onTap: () => launchUrl(Uri.parse(link)),
+              height: HpLayout.buttonSocialLinkSize,
+              width: HpLayout.buttonSocialLinkSize,
+            ),
+          )
+        : Container();
   }
 }

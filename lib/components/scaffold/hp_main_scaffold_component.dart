@@ -7,7 +7,7 @@ import 'package:homepage_ui/configs/hp_i18n.dart';
 import 'package:homepage_ui/configs/hp_layout.dart';
 import 'package:homepage_ui/configs/hp_router.dart';
 import 'package:homepage_ui/enums/hp_button_type.dart';
-import 'package:homepage_ui/model/hp_action_model.dart';
+import 'package:homepage_ui/models/hp_action_model.dart';
 
 class HpMainScaffoldComponent extends StatelessWidget {
   final Widget child;
@@ -30,7 +30,15 @@ class HpMainScaffoldComponent extends StatelessWidget {
             ),
             actions: isMobile ? [] : _getDesktopNavigationActions(context),
           ),
-          Expanded(child: child),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: HpLayout.pageMaxWidth),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: HpLayout.pageDefaultSpacing),
+                child: child,
+              ),
+            ),
+          ),
           HpFooterBarComponent(),
           if (isMobile) _getMobileNavigation(context),
         ],
