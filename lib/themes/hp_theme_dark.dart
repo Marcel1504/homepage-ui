@@ -64,6 +64,6 @@ class HpThemeDark extends HpTheme {
 
   @override
   Color surfaceContainerLow() {
-    return const Color.fromRGBO(22, 22, 28, 1.0);
+    return const Color.fromRGBO(50, 50, 60, 1.0);
   }
 }

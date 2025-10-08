@@ -1,4 +1,5 @@
 import 'package:homepage_ui/data/content/jobs/hp_content_job_role_data.dart';
+import 'package:homepage_ui/data/content/jobs/hp_content_job_task_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'hp_content_job_data.g.dart';
@@ -11,7 +12,7 @@ class HpContentJobData {
   String? dateFrom;
   String? dateTo;
   List<HpContentJobRoleData>? roles;
-  List<String>? tasks;
+  List<HpContentJobTaskData>? tasks;
 
   factory HpContentJobData.fromJson(Map<String, dynamic> json) => _$HpContentJobDataFromJson(json);
 

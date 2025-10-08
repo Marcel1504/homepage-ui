@@ -1,4 +1,13 @@
 {
+  "content": {
+    "education": "Education",
+    "certifications": "Certifications",
+    "jobs": {
+      "header": "Jobs",
+      "roles": "Roles",
+      "tasks": "Tasks"
+    }
+  },
   "pages": {
     "chat": "Chat",
     "legalImprint": "Imprint",
@@ -6,5 +15,9 @@
     "legalTermsOfUse": "Terms of Use",
     "profile": "Profile",
     "projects": "Projects"
+  },
+  "time": {
+    "today": "Today",
+    "unknown": "Unknown"
   }
 }

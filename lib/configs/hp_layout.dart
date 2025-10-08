@@ -22,6 +22,10 @@ class HpLayout {
 
   static const double buttonSocialLinkSize = 50;
 
+  // container
+  static const double containerDefaultBorderRadius = 25;
+  static const double containerDefaultSpacing = 14;
+
   // image
   static const double imageProfileDesktopSize = 300;
   static const double imageProfileMobileSize = 250;
