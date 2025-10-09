@@ -55,13 +55,11 @@ class HpIconTextButtonComponent extends StatelessWidget {
   }
 
   Widget _getText(BuildContext context, Color foreground) {
+    TextStyle finalTextStyle =
+        textStyle ?? Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: HpLayout.buttonDefaultTextSize);
     return Padding(
       padding: EdgeInsets.only(left: icon != null && !vertical ? (height ?? HpLayout.buttonDefaultSize) / 6 : 0),
-      child: Text(
-        text ?? "",
-        style: (textStyle ?? Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: HpLayout.buttonDefaultTextSize))
-            .copyWith(color: foreground),
-      ),
+      child: Text(text ?? "", style: finalTextStyle.copyWith(color: foreground)),
     );
   }
 }

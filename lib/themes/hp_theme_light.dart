@@ -59,11 +59,11 @@ class HpThemeLight extends HpTheme {
 
   @override
   Color surfaceContainerHigh() {
-    return const Color.fromRGBO(234, 234, 242, 1.0);
+    return const Color.fromRGBO(238, 238, 245, 1.0);
   }
 
   @override
   Color surfaceContainerLow() {
-    return const Color.fromRGBO(255, 255, 255, 1.0);
+    return const Color.fromRGBO(245, 245, 252, 1.0);
   }
 }

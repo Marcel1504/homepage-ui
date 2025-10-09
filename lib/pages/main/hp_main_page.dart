@@ -45,7 +45,12 @@ class _HpMainPageState extends State<HpMainPage> {
             context,
             provider,
           );
-          return _getContent(context, profile, socialLinks);
+          return profile.isLoading || socialLinks.isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: const EdgeInsets.all(HpLayout.pageDefaultSpacing),
+                  child: _getContent(context, profile, socialLinks),
+                );
         },
       ),
     );

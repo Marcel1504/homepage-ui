@@ -13,13 +13,14 @@ class HpMainScaffoldComponent extends StatelessWidget {
   final Widget child;
   final String? activeActionText;
 
-  const HpMainScaffoldComponent({super.key, required this.child, this.activeActionText});
+  const HpMainScaffoldComponent({super.key, required this.child, this.activeActionText });
 
   @override
   Widget build(BuildContext context) {
     final bool isMobile = HpLayout.isMobile(context);
     return Scaffold(
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           HpAppBarComponent(
             leading: HpImageAssetButtonComponent(
@@ -31,13 +32,7 @@ class HpMainScaffoldComponent extends StatelessWidget {
             actions: isMobile ? [] : _getDesktopNavigationActions(context),
           ),
           Expanded(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: HpLayout.pageMaxWidth),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: HpLayout.pageDefaultSpacing),
-                child: child,
-              ),
-            ),
+            child: child,
           ),
           HpFooterBarComponent(),
           if (isMobile) _getMobileNavigation(context),

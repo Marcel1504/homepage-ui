@@ -60,7 +60,7 @@ abstract class HpApi {
   }
 
   Map<String, String> _getHeaders(Locale? locale) {
-    return {"Content-Type": "application/json", "Accept-Language": locale?.countryCode ?? 'en'};
+    return {"Content-Type": "application/json", "Accept-Language": locale?.languageCode ?? 'en'};
   }
 
   Uri _generateUri(String endpoint, {Map<String, dynamic>? params, String? url}) {

@@ -7,15 +7,16 @@ import 'package:homepage_ui/services/time/hp_time_service.dart';
 class HpTimelineContainerComponent extends StatelessWidget {
   final String? title;
   final List<HpTimelineModel>? timeline;
+  final Color? color;
 
-  const HpTimelineContainerComponent({super.key, this.title, this.timeline = const []});
+  const HpTimelineContainerComponent({super.key, this.title, this.timeline = const [], this.color});
 
   @override
   Widget build(BuildContext context) {
     String? finalTitle = title;
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        color: color ?? Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(HpLayout.containerDefaultBorderRadius),
       ),
       child: Padding(
@@ -31,7 +32,7 @@ class HpTimelineContainerComponent extends StatelessWidget {
   Widget _getTitle(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: HpLayout.containerDefaultSpacing),
-      child: Row(children: [Text(title, style: Theme.of(context).textTheme.titleLarge)]),
+      child: Row(children: [Text(title, style: Theme.of(context).textTheme.headlineLarge)]),
     );
   }
 
@@ -56,9 +57,9 @@ class HpTimelineContainerComponent extends StatelessWidget {
       children: [
         Text(
           HpTimeService().transformMonthRangeString(context, t.dateFrom, t.dateTo),
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
-        Text(t.text ?? "", style: Theme.of(context).textTheme.headlineLarge),
+        Text(t.text ?? "", style: Theme.of(context).textTheme.headlineSmall),
       ],
     );
   }
@@ -68,11 +69,14 @@ class HpTimelineContainerComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          HpTimeService().transformMonthRangeString(context, t.dateFrom, t.dateTo),
-          style: Theme.of(context).textTheme.headlineSmall,
+        Expanded(
+          flex: 1,
+          child: Text(
+            HpTimeService().transformMonthRangeString(context, t.dateFrom, t.dateTo),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         ),
-        Text(t.text ?? "", style: Theme.of(context).textTheme.headlineLarge),
+        Expanded(flex: 3, child: Text(t.text ?? "", style: Theme.of(context).textTheme.headlineMedium)),
       ],
     );
   }

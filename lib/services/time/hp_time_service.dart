@@ -41,7 +41,7 @@ class HpTimeService {
           inputPattern: HpTimeService.isoDayPattern,
           outputPattern: HpTimeService.prettyMonthPattern,
         ) ??
-        HpI18n.translate(context, "time.today");
+        HpI18n.translate(context, "time.unknown");
     String finalDateTo =
         transformDateTimeString(
           context,
@@ -49,7 +49,7 @@ class HpTimeService {
           inputPattern: HpTimeService.isoDayPattern,
           outputPattern: HpTimeService.prettyMonthPattern,
         ) ??
-        HpI18n.translate(context, "time.now");
+        HpI18n.translate(context, "time.today");
     return "$finalDateFrom - $finalDateTo";
   }
 }

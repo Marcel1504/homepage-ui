@@ -1,22 +1,21 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:homepage_ui/components/container/hp_container_component.dart';
-import 'package:homepage_ui/components/container/hp_timeline_container_component.dart';
+import 'package:homepage_ui/components/button/hp_icon_text_button_component.dart';
 import 'package:homepage_ui/components/scaffold/hp_main_scaffold_component.dart';
 import 'package:homepage_ui/configs/hp_i18n.dart';
 import 'package:homepage_ui/configs/hp_layout.dart';
 import 'package:homepage_ui/data/content/certifications/hp_content_certification_data.dart';
 import 'package:homepage_ui/data/content/education/hp_content_education_data.dart';
 import 'package:homepage_ui/data/content/jobs/hp_content_job_data.dart';
-import 'package:homepage_ui/data/content/jobs/hp_content_job_role_data.dart';
-import 'package:homepage_ui/data/content/jobs/hp_content_job_task_data.dart';
+import 'package:homepage_ui/enums/hp_button_type.dart';
 import 'package:homepage_ui/models/hp_content_model.dart';
-import 'package:homepage_ui/models/hp_timeline_model.dart';
+import 'package:homepage_ui/pages/profile/hp_profile_certifications_subpage.dart';
+import 'package:homepage_ui/pages/profile/hp_profile_education_subpage.dart';
+import 'package:homepage_ui/pages/profile/hp_profile_jobs_subpage.dart';
 import 'package:homepage_ui/providers/content/hp_content_provider.dart';
 import 'package:homepage_ui/services/content/loader/hp_content_certificates_loader_service.dart';
 import 'package:homepage_ui/services/content/loader/hp_content_education_loader_service.dart';
 import 'package:homepage_ui/services/content/loader/hp_content_jobs_loader_service.dart';
-import 'package:homepage_ui/services/time/hp_time_service.dart';
 import 'package:provider/provider.dart';
 
 class HpProfilePage extends StatefulWidget {
@@ -27,6 +26,9 @@ class HpProfilePage extends StatefulWidget {
 }
 
 class _HpProfilePageState extends State<HpProfilePage> {
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -52,113 +54,83 @@ class _HpProfilePageState extends State<HpProfilePage> {
             context,
             provider,
           );
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                _getContentSectionHeader(context, HpI18n.translate(context, "content.jobs.header")),
-                _getContentJobs(context, jobs),
-                _getContentSectionHeader(context, HpI18n.translate(context, "content.education")),
-                _getContentSectionHeader(context, HpI18n.translate(context, "content.certifications")),
-              ],
-            ),
-          );
+          return jobs.isLoading || education.isLoading || certifications.isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Column(children: [_getButtonRow(context), _getContent(context, jobs, education, certifications)]);
         },
       ),
     );
   }
 
-  Widget _getContentSectionHeader(BuildContext context, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: HpLayout.containerDefaultSpacing),
-      child: Text(text, style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 25)),
-    );
-  }
-
-  Widget _getContentJobs(BuildContext context, HpContentModel<List<HpContentJobData>> jobs) {
-    List<HpContentJobData> list = jobs.data ?? [];
-    return Column(children: list.mapIndexed((i, j) => _getContentJobsItem(context, j)).toList());
-  }
-
-  Widget _getContentJobsItem(BuildContext context, HpContentJobData job) {
-    return HpContainerComponent(
-      title: _getContentJobsItemHeader(context, job),
-      child: Column(
-        children: [
-          _getContentJobsItemRoles(context, job),
-          Padding(
-            padding: const EdgeInsets.only(top: HpLayout.containerDefaultSpacing),
-            child: _getContentJobsItemTasks(context, job),
+  Widget _getButtonRow(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: HpLayout.pageMaxWidth),
+      child: Align(
+        alignment: AlignmentGeometry.centerLeft,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.all(HpLayout.pageDefaultSpacing),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HpI18n.translate(context, "content.jobs.header"),
+                HpI18n.translate(context, "content.education"),
+                HpI18n.translate(context, "content.certifications"),
+              ].mapIndexed((i, s) => _getButtonRowItem(context, s, i)).toList(),
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _getContentJobsItemHeader(BuildContext context, HpContentJobData job) {
-    return HpLayout.isMobile(context)
-        ? _getContentJobsItemHeaderMobile(context, job)
-        : _getContentJobsItemHeaderDesktop(context, job);
-  }
-
-  Widget _getContentJobsItemHeaderMobile(BuildContext context, HpContentJobData job) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: HpLayout.containerDefaultSpacing / 2),
-          child: Text(
-            HpTimeService().transformMonthRangeString(context, job.dateFrom, job.dateTo),
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(job.roles?.first.role ?? "", style: Theme.of(context).textTheme.titleLarge),
-            Text(job.company ?? "", style: Theme.of(context).textTheme.titleMedium),
-          ],
-        ),
-      ],
+  Widget _getButtonRowItem(BuildContext context, String text, int index) {
+    return Padding(
+      padding: const EdgeInsets.only(right: HpLayout.pageDefaultSpacing * 0.5),
+      child: HpIconTextButtonComponent(
+        text: text,
+        onTap: () => setState(() {
+          _currentIndex = index;
+          _pageController.animateToPage(_currentIndex, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+        }),
+        type: index == _currentIndex ? HpButtonType.primary : HpButtonType.normal,
+      ),
     );
   }
 
-  Widget _getContentJobsItemHeaderDesktop(BuildContext context, HpContentJobData job) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          child: Text(
-            HpTimeService().transformMonthRangeString(context, job.dateFrom, job.dateTo),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(job.roles?.first.role ?? "", style: Theme.of(context).textTheme.titleLarge),
-              Text(job.company ?? "", style: Theme.of(context).textTheme.titleMedium),
-            ],
-          ),
-        ),
-      ],
+  Widget _getContent(
+    BuildContext context,
+    HpContentModel<List<HpContentJobData>> jobs,
+    HpContentModel<List<HpContentEducationData>> education,
+    HpContentModel<List<HpContentCertificationData>> certifications,
+  ) {
+    return Expanded(
+      child: PageView(
+        controller: _pageController,
+        onPageChanged: (i) => setState(() => _currentIndex = i),
+        children: _getContentItems(context, jobs, education, certifications)
+            .map(
+              (e) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: HpLayout.pageDefaultSpacing),
+                child: e,
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 
-  Widget _getContentJobsItemRoles(BuildContext context, HpContentJobData job) {
-    List<HpContentJobRoleData> roles = job.roles ?? [];
-    return HpTimelineContainerComponent(
-      title: HpI18n.translate(context, "content.jobs.roles"),
-      timeline: roles.map((r) => HpTimelineModel(text: r.role, dateFrom: r.dateFrom, dateTo: r.dateTo)).toList(),
-    );
-  }
-
-  Widget _getContentJobsItemTasks(BuildContext context, HpContentJobData job) {
-    List<HpContentJobTaskData> tasks = job.tasks ?? [];
-    return HpTimelineContainerComponent(
-      title: HpI18n.translate(context, "content.jobs.tasks"),
-      timeline: tasks.map((r) => HpTimelineModel(text: r.task, dateFrom: r.dateFrom, dateTo: r.dateTo)).toList(),
-    );
+  List<Widget> _getContentItems(
+    BuildContext context,
+    HpContentModel<List<HpContentJobData>> jobs,
+    HpContentModel<List<HpContentEducationData>> education,
+    HpContentModel<List<HpContentCertificationData>> certifications,
+  ) {
+    return [
+      HpProfileJobsSubpage(jobs: jobs.data ?? []),
+      HpProfileEducationSubpage(education: education.data ?? []),
+      HpProfileCertificationsSubpage(certifications: certifications.data ?? []),
+    ];
   }
 }

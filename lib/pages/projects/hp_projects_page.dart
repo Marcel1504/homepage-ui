@@ -7,6 +7,7 @@ class HpProjectsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HpMainScaffoldComponent(activeActionText: HpI18n.translate(context, "pages.projects"), child: Container());
+    return HpMainScaffoldComponent(
+        activeActionText: HpI18n.translate(context, "pages.projects"), child: Text("Projekte"));
   }
 }

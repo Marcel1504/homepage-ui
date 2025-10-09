@@ -10,8 +10,8 @@ class HpLayout {
   static const double buttonAppBarTextSize = buttonAppBarSize * 0.5;
 
   static const double buttonDefaultIconSize = 24;
-  static const double buttonDefaultSize = 48;
-  static const double buttonDefaultTextSize = 0.45;
+  static const double buttonDefaultSize = 40;
+  static const double buttonDefaultTextSize = 16;
 
   static const double buttonFooterSize = 26;
   static const double buttonFooterTextSize = 14;
