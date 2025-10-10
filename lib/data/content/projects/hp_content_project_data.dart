@@ -7,6 +7,8 @@ class HpContentProjectData {
   HpContentProjectData({this.title, this.description, this.externalLink, this.thumbnailMedia});
 
   String? title;
+  String? dateFrom;
+  String? dateTo;
   String? description;
   String? externalLink;
   String? thumbnailMedia;

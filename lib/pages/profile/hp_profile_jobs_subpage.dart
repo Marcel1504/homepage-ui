@@ -29,7 +29,7 @@ class HpProfileJobsSubpage extends StatelessWidget {
 
   Widget _getContentJobsItem(BuildContext context, HpContentJobData job) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: HpLayout.pageDefaultSpacing),
+      padding: const EdgeInsets.only(top: HpLayout.pageDefaultSpacing),
       child: HpContainerComponent(
         title: _getContentJobsItemHeader(context, job),
         color: Theme.of(context).colorScheme.surfaceContainerHigh,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homepage_ui/configs/hp_layout.dart';
 
 abstract class HpTheme {
   ThemeData get() {
@@ -36,7 +37,11 @@ abstract class HpTheme {
         labelMedium: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: onSurface()),
         labelLarge: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: onSurface()),
       ),
-      inputDecorationTheme: const InputDecorationTheme(isDense: true),
+        inputDecorationTheme: const InputDecorationTheme(isDense: true),
+        dialogTheme: DialogThemeData(
+          backgroundColor: surface(),
+          constraints: BoxConstraints(maxWidth: HpLayout.dialogMaxWidth),
+        )
     );
   }
 

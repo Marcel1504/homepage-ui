@@ -26,9 +26,14 @@ class HpLayout {
   static const double containerDefaultBorderRadius = 25;
   static const double containerDefaultSpacing = 14;
 
+  // dialog
+  static const double dialogMaxWidth = 500;
+
   // image
   static const double imageProfileDesktopSize = 300;
   static const double imageProfileMobileSize = 250;
+
+  static const double imageProjectsSize = 150;
 
   // page
   static const double pageDefaultSpacing = 12;

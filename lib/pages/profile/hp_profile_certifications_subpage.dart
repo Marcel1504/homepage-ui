@@ -26,7 +26,7 @@ class HpProfileCertificationsSubpage extends StatelessWidget {
 
   Widget _getContentCertificationsItem(BuildContext context, HpContentCertificationData cert) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: HpLayout.pageDefaultSpacing),
+      padding: const EdgeInsets.only(top: HpLayout.pageDefaultSpacing),
       child: HpContainerComponent(
         title: _getContentCertificationsItemHeader(context, cert.dateFrom, cert.dateTo, cert.title),
         child: _getContentCertificationsBody(context, cert.description ?? ""),

@@ -24,7 +24,7 @@ class HpProfileEducationSubpage extends StatelessWidget {
 
   Widget _getContentEducationItem(BuildContext context, HpContentEducationData education) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: HpLayout.pageDefaultSpacing),
+      padding: const EdgeInsets.only(top: HpLayout.pageDefaultSpacing),
       child: HpContainerComponent(
         title: _getContentEducationItemHeader(context, education.dateFrom, education.dateTo, education.institute),
         child: _getContentEducationBody(context, education.degree ?? "?"),

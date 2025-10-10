@@ -5,8 +5,9 @@ class HpContainerComponent extends StatelessWidget {
   final Widget? child;
   final Widget? title;
   final Color? color;
+  final EdgeInsets? padding;
 
-  const HpContainerComponent({super.key, this.child, this.title, this.color});
+  const HpContainerComponent({super.key, this.child, this.title, this.color, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class HpContainerComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(HpLayout.containerDefaultBorderRadius),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(HpLayout.containerDefaultSpacing),
+        padding: padding ?? const EdgeInsets.all(HpLayout.containerDefaultSpacing),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
