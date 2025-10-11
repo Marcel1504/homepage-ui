@@ -35,6 +35,10 @@ class HpLayout {
 
   static const double imageProjectsSize = 150;
 
+  // input
+  static const double inputDefaultBorderWidth = 1;
+  static const double inputDefaultBaseSize = 48;
+
   // page
   static const double pageDefaultSpacing = 12;
   static const double pageMaxWidth = 1000;

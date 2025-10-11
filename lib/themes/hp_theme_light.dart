@@ -39,7 +39,7 @@ class HpThemeLight extends HpTheme {
 
   @override
   Color error() {
-    return const Color.fromRGBO(220, 74, 74, 1.0);
+    return const Color.fromRGBO(145, 1, 1, 1.0);
   }
 
   @override

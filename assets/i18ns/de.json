@@ -1,4 +1,10 @@
 {
+  "action": {
+    "reset": "Zurücksetzen"
+  },
+  "chat": {
+    "question": "Stelle ein Frage..."
+  },
   "content": {
     "education": "Ausbildung",
     "certifications": "Zertifikate",
@@ -7,6 +13,21 @@
       "roles": "Positionen",
       "tasks": "Aufgaben"
     }
+  },
+  "error": {
+    "hp0001": "Inhalte für den Typ \"{type}\" in der Sprache \"{lang}\" konnten nicht geladen werden.",
+    "hp0002": "Inhalte für einen unbekannten Typ konnten nicht geladen werden.",
+    "hp0003": "Inhalte für eine unbekannte Sprache konnten nicht geladen werden.",
+    "hp0004": "Die Inhalte konnten nicht korrekt geladen werden.",
+    "hp1000": "Zeitüberschreitung beim Aufruf des Chat-Assistenten.",
+    "hp1001": "Der Chat-Assistent konnte die Anfrage nicht verarbeiten.",
+    "hp1002": "Es konnte keine Verbindung zum Chat-Assistenten hergestellt werden.",
+    "hp1003": "Du wurdest vom Chat-Assistenten geblockt.",
+    "hp2000": "Das Medium \"{name}\" konnte nicht gefunden werden.",
+    "hp2001": "Ein Medium mit unbekanntem Namen kann nicht geladen werden.",
+    "hp2002": "Der Medientyp konnte nicht bestimmt werden.",
+    "hp9990": "Die Anfrage konnte aufgrund eines Fehlers nicht verarbeitet werden.",
+    "unknown": "Ein unbekannter Fehler ist aufgetreten."
   },
   "pages": {
     "chat": "Chat",

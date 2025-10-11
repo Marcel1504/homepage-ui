@@ -48,7 +48,7 @@ class HpButtonComponent extends StatelessWidget {
       case HpButtonType.transparent:
         color = Colors.transparent;
     }
-    return onTap != null ? color : color.withAlpha(20);
+    return onTap != null ? color : color.withAlpha(100);
   }
 
   Color _getForegroundColor(BuildContext context) {
@@ -66,6 +66,6 @@ class HpButtonComponent extends StatelessWidget {
       case HpButtonType.transparent:
         color = Theme.of(context).colorScheme.onSurface;
     }
-    return onTap != null ? color : color.withAlpha(20);
+    return onTap != null ? color : color.withAlpha(25);
   }
 }

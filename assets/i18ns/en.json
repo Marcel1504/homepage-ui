@@ -1,4 +1,10 @@
 {
+  "action": {
+    "reset": "Reset"
+  },
+  "chat": {
+    "question": "Ask a question..."
+  },
   "content": {
     "education": "Education",
     "certifications": "Certifications",
@@ -7,6 +13,21 @@
       "roles": "Roles",
       "tasks": "Tasks"
     }
+  },
+  "error": {
+    "hp0001": "Content for type \"{type}\" in language \"{lang}\" could not be loaded.",
+    "hp0002": "Content for an unknown type could not be loaded.",
+    "hp0003": "Content for an unknown language could not be loaded.",
+    "hp0004": "The content could not be loaded correctly.",
+    "hp1000": "Timeout when calling the chat assistant.",
+    "hp1001": "The chat assistant was unable to process the request.",
+    "hp1002": "Could not establish a connection to the chat assistant.",
+    "hp1003": "You were blocked by the chat assistant.",
+    "hp2000": "The medium \"{name}\" could not be found.",
+    "hp2001": "A medium with an unknown name could not be loaded.",
+    "hp2002": "The media type could not be determined.",
+    "hp9990": "The request could not be processed due to an error.",
+    "unknown": "An unknown error has occurred."
   },
   "pages": {
     "chat": "Chat",

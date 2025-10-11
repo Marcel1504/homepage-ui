@@ -29,6 +29,8 @@ enum HpErrorCode {
   hp1001,
   @JsonValue("HP1002")
   hp1002,
+  @JsonValue("HP1003")
+  hp1003,
   @JsonValue("HP2000")
   hp2000,
   @JsonValue("HP2001")
