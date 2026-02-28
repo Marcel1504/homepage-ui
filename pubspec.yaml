@@ -50,4 +50,5 @@ flutter:
   assets:
     - assets/images/
     - assets/i18ns/
+    - assets/configs/
 

@@ -10,7 +10,7 @@ class HpHtmlComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle h1 = Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 24);
     TextStyle h2 = Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 21);
-    TextStyle p = Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 18);
+    TextStyle p = Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18);
     return Html(style: {"h1": _getStyle(h1, 24), "h2": _getStyle(h2, 20), "p": _getStyle(p, 10)}, data: data ?? "");
   }
 

@@ -1,8 +1,13 @@
 {
   "action": {
+    "consent": "Consent",
     "reset": "Reset"
   },
   "chat": {
+    "consent": {
+      "text": "I confirm that I have read and understood the Privacy Policy available at marcelberger.me and voluntarily consent to the processing and sharing of my chat messages with Grok (xAI) in accordance with that policy.",
+      "title": "Disclaimer"
+    },
     "question": "Ask a question..."
   },
   "content": {

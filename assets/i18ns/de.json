@@ -1,8 +1,13 @@
 {
   "action": {
+    "consent": "Zustimmen",
     "reset": "Zurücksetzen"
   },
   "chat": {
+    "consent": {
+      "text": "Ich bestätige, dass ich die Datenschutzerklärung von marcelberger.me gelesen und verstanden habe und freiwillig der Verarbeitung und Weitergabe meiner Chatnachrichten an Grok (xAI) gemäß dieser Richtlinie zustimme.",
+      "title": "Datenschutzhinweis"
+    },
     "question": "Stelle ein Frage..."
   },
   "content": {

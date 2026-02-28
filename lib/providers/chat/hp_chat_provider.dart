@@ -11,16 +11,22 @@ class HpChatProvider extends ChangeNotifier {
   final List<HpChatMessageUiModel> _messages = [];
   int? _chatId;
   bool _isLoading = false;
+  bool _hasConsent = false;
   HpErrorData? _error;
 
   Future<void>? sendChatMessage(String? message) {
-    if (message != null && !_isLoading) {
+    if (message != null && !_isLoading && _hasConsent) {
       _isLoading = true;
       _error = null;
       _messages.add(HpChatMessageUiModel(isUserMessage: true, type: HpChatMessageType.text, content: message));
       return Future.microtask(() async => await _postMessage(message));
     }
     return null;
+  }
+
+  void consent() {
+    _hasConsent = true;
+    Future.microtask(() => notifyListeners());
   }
 
   void clearChat() {
@@ -48,6 +54,8 @@ class HpChatProvider extends ChangeNotifier {
   }
 
   bool get isLoading => _isLoading;
+
+  bool get hasConsent => _hasConsent;
 
   List<HpChatMessageUiModel> get messages => _messages;
 

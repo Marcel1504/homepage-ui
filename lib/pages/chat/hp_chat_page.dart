@@ -33,7 +33,7 @@ class _HpChatPageState extends State<HpChatPage> {
           int newMessageCount = provider.messages.length;
           if (newMessageCount > _currentMessageCount) {
             Future.microtask(
-              () => setState(() => _scrollController.jumpTo(_scrollController.position.maxScrollExtent)),
+                  () => setState(() => _scrollController.jumpTo(_scrollController.position.maxScrollExtent)),
             );
           }
           _currentMessageCount = newMessageCount;
@@ -55,10 +55,12 @@ class _HpChatPageState extends State<HpChatPage> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: HpLayout.pageMaxWidth),
                 child: HpChatComponent(
+                  hasConsent: provider.hasConsent,
                   messages: provider.messages,
                   isLoading: provider.isLoading,
                   error: provider.error,
                   onReset: () => provider.clearChat(),
+                  onConsent: () => provider.consent(),
                 ),
               ),
             ),
@@ -77,10 +79,13 @@ class _HpChatPageState extends State<HpChatPage> {
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: HpLayout.pageMaxWidth),
-        child: HpPromptInputComponent(
-          disabled: provider.isLoading || provider.error != null,
-          onTextSent: (t) => provider.sendChatMessage(t),
-          hint: HpI18n.translate(context, "chat.question"),
+        child: Opacity(
+          opacity: provider.hasConsent ? 1 : 0.1,
+          child: HpPromptInputComponent(
+            disabled: !provider.hasConsent || provider.isLoading || provider.error != null,
+            onTextSent: (t) => provider.sendChatMessage(t),
+            hint: HpI18n.translate(context, "chat.question"),
+          ),
         ),
       ),
     );
